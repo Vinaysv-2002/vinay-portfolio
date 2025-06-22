@@ -1,13 +1,695 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nagaraj's Portfolio</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vinay SV - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+            color: white;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        .profile-info h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .profile-info .title {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            animation: slideInLeft 1s ease-out 0.2s both;
+        }
+
+        .contact-info {
+            animation: slideInRight 1s ease-out 0.4s both;
+        }
+
+        .contact-info p {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Background Animation */
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .shape2 { top: 60%; right: 10%; animation-delay: 2s; }
+        .shape3 { bottom: 20%; left: 30%; animation-delay: 4s; }
+
+        /* Navigation */
+        nav {
+            background: rgba(0,0,0,0.9);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a:hover {
+            background: linear-gradient(45deg, #8B4513, #A0522D);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.4);
+        }
+
+        /* Sections */
+        section {
+            padding: 4rem 0;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        section:nth-child(even) {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(45deg, #8B4513, #A0522D);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-category {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .skill-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(45deg, #8B4513, #A0522D);
+        }
+
+        .skill-category h3 {
+            color: #8B4513;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background: linear-gradient(45deg, #8B4513, #A0522D);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .project-header {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background: #f0f0f0;
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #8B4513;
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #8B4513, #A0522D);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link i {
+            font-size: 1.2rem;
+            font-style: normal;
+            width: 20px;
+            text-align: center;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(139, 69, 19, 0.4);
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .social-link:hover::before {
+            left: 100%;
+        }
+
+        /* Hobbies Section */
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .hobby-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .hobby-card:hover {
+            transform: translateY(-10px) rotateY(5deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .hobby-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .hobby-content {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .hobby-content h3 {
+            color: #8B4513;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .hobby-content h3 i {
+            font-size: 1.5rem;
+            color: #A0522D;
+            font-style: normal;
+            width: 25px;
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-info h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .projects-grid,
+            .hobbies-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-bg">
+            <div class="floating-shapes shape1"></div>
+            <div class="floating-shapes shape2"></div>
+            <div class="floating-shapes shape3"></div>
+        </div>
+        <div class="container">
+            <div class="header-content">
+                <div class="profile-info">
+                    <h1>VINAY SV</h1>
+                    <p class="title">MCA Student | Full-Stack Developer | Data Scientist</p>
+                </div>
+                <div class="contact-info">
+                    <p>📧 vinaysv202@gmail.com</p>
+                    <p>📱 8317379977</p>
+                    <p>📍 Bangalore, Karnataka</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#hobbies">Hobbies</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="about" class="animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.8;">
+                <p>I'm a passionate MCA final year student at Dayananda Sagar College of Arts, Science and Commerce, Bangalore. With a strong foundation in computer applications and a keen interest in emerging technologies, I specialize in full-stack development, machine learning, and data science.</p>
+                <br>
+                <p>Beyond coding, I'm a multi-talented individual who loves dancing, acting, gaming, and cooking. I believe in balancing technical skills with creative pursuits, which helps me approach problems with innovative solutions.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title">Education</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+                <div class="skill-category">
+                    <h3>Master of Computer Applications (MCA)</h3>
+                    <p><strong>Dayananda Sagar College of Arts, Science and Commerce</strong></p>
+                    <p>Bangalore, Karnataka</p>
+                    <p>Currently in 4th Semester (Final Year)</p>
+                    <p>CGPA: 6.3</p>
+                </div>
+                <div class="skill-category">
+                    <h3>Bachelor of Computer Applications (BCA)</h3>
+                    <p><strong>SBRR Mahajana's First Grade College</strong></p>
+                    <p>Mysore, Karnataka</p>
+                    <p>Completed</p>
+                    <p>CGPA: 7.0</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Programming Languages</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">JavaScript</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Web Technologies</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">HTML</span>
+                        <span class="skill-tag">CSS</span>
+                        <span class="skill-tag">JavaScript</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Frameworks</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Django</span>
+                        <span class="skill-tag">Node.js</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Databases</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">SQLite</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Cloud & Tools</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">AWS (Basic)</span>
+                        <span class="skill-tag">VS Code</span>
+                        <span class="skill-tag">Eclipse</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>Heart Rate Prediction using Face Video</h3>
+                        <p>BCA Final Project</p>
+                    </div>
+                    <div class="project-content">
+                        <p>Developed a non-invasive heart rate monitoring system that analyzes subtle facial skin color changes through video feed. Used computer vision and signal processing techniques to extract remote photoplethysmographic (rPPG) signals for accurate heartbeat estimation without physical contact.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Computer Vision</span>
+                            <span class="tech-tag">Signal Processing</span>
+                            <span class="tech-tag">rPPG</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>Agricultural Crop Price Prediction</h3>
+                        <p>MCA Ongoing Project</p>
+                    </div>
+                    <div class="project-content">
+                        <p>Currently developing a machine learning model to predict agricultural crop prices. This project aims to help farmers and stakeholders make informed decisions about crop cultivation and market strategies using historical data and market trends.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Machine Learning</span>
+                            <span class="tech-tag">Data Analysis</span>
+                            <span class="tech-tag">Predictive Modeling</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hobbies" class="animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title">Hobbies & Interests</h2>
+            <div class="hobbies-grid">
+                <div class="hobby-card">
+                    <div class="hobby-image" style="background-image: url('https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=200&fit=crop')"></div>
+                    <div class="hobby-content">
+                        <h3><i>💃</i> Dancing</h3>
+                        <p>🏆 1st Place in Group Dance at Yuva Dasara</p>
+                    </div>
+                </div>
+                <div class="hobby-card">
+                    <div class="hobby-image" style="background-image: url('https://images.unsplash.com/photo-1503095396549-807759245b35?w=400&h=200&fit=crop')"></div>
+                    <div class="hobby-content">
+                        <h3><i>🎭</i> Acting & Theater</h3>
+                        <p>Performed in drama at Kiru Ranga Madhira, Mysore</p>
+                    </div>
+                </div>
+                <div class="hobby-card">
+                    <div class="hobby-image" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=200&fit=crop')"></div>
+                    <div class="hobby-content">
+                        <h3><i>🎮</i> Gaming (BGMI)</h3>
+                        <p>Passionate mobile gamer and strategist</p>
+                    </div>
+                </div>
+                <div class="hobby-card">
+                    <div class="hobby-image" style="background-image: url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=200&fit=crop')"></div>
+                    <div class="hobby-content">
+                        <h3><i>👨‍🍳</i> Cooking</h3>
+                        <p>Love experimenting with different cuisines</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title">Let's Connect</h2>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/vinay-sv-6a9038248" target="_blank" class="social-link">
+                    <i>💼</i> LinkedIn
+                </a>
+                <a href="https://github.com/Vinaysv-2002" target="_blank" class="social-link">
+                    <i>💻</i> GitHub
+                </a>
+                <a href="https://youtube.com/@vinay_official23" target="_blank" class="social-link">
+                    <i>📺</i> YouTube
+                </a>
+                <a href="https://www.instagram.com/mr_wings" target="_blank" class="social-link">
+                    <i>📷</i> Instagram
+                </a>
+                <a href="mailto:vinaysv202@gmail.com" class="social-link">
+                    <i>✉️</i> Email Me
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add some interactive hover effects
+        document.querySelectorAll('.project-card, .hobby-card, .skill-category').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Dynamic background gradient
+        let angle = 0;
+        setInterval(() => {
+            angle += 0.5;
+            document.querySelector('header').style.background = 
+                `linear-gradient(${angle}deg, #8B4513 0%, #A0522D 50%, #CD853F 100%)`;
+        }, 100);
+    </script>
+</body>
 </html>
